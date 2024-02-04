@@ -31,14 +31,20 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "User Already Exist");
   }
 
+  console.log("request Error", req.files)
   // Checking images
   const avatarLocalPath = req.files?.avatar[0]?.path;
-  const coverImgLocalPath = req.files?.coverImage[0]?.path;
+  // const coverImgLocalPath = req.files?.coverImage[0]?.path;
 
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar is required");
   }
 
+
+  let coverImgLocalPath;
+  if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+      coverImgLocalPath = req.files.coverImage[0].path
+  }
   //Upload on cloudary
   const avatar = await uploadOnCloudnary(avatarLocalPath);
   const coverImage = await uploadOnCloudnary(coverImgLocalPath);
