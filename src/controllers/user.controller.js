@@ -33,18 +33,32 @@ const registerUser = asyncHandler(async (req, res) => {
 
   console.log("request Error", req.files)
   // Checking images
-  const avatarLocalPath = req.files?.avatar[0]?.path;
+  // const avatarLocalPath = req.files?.avatar[0]?.path;
   // const coverImgLocalPath = req.files?.coverImage[0]?.path;
+
+  let avatarLocalPath;
+  if (
+    req.files &&
+    Array.isArray(req.files.avatar) &&
+    req.files.avatar.length > 0
+  ) {
+    avatarLocalPath = req.files.avatar[0]?.path;
+  }
+  let coverImgLocalPath;
+  if (
+    req.files &&
+    Array.isArray(req.files.coverImage) &&
+    req.files.coverImage.length > 0
+  ) {
+    coverImgLocalPath = req.files.coverImage[0]?.path;
+  }
 
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar is required");
   }
 
 
-  let coverImgLocalPath;
-  if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
-      coverImgLocalPath = req.files.coverImage[0].path
-  }
+  
   //Upload on cloudary
   const avatar = await uploadOnCloudnary(avatarLocalPath);
   const coverImage = await uploadOnCloudnary(coverImgLocalPath);
@@ -73,9 +87,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   //Sending Response
-  return res
-    .status(201)
-    .json(new ApiResponse(200, createdUser, "User Registered Successfully"));
+  return res.status(201).json(new ApiResponse(200, createdUser, "User Registered Successfully"));
 });
 
 export { registerUser };
