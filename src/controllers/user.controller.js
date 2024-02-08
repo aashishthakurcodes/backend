@@ -16,11 +16,15 @@ const registerUser = asyncHandler(async (req, res) => {
   // Return res
 
   const { fullname, email, username, password } = req.body;
-  console.log("E-mail", email);
+  // console.log("E-mail", email);
   if (
     [fullname, email, username, password].some((field) => field?.trim() === "")
   ) {
     throw new ApiError(400, "All fields are required");
+  }
+  //Checking E-mail
+  if(!email.includes("@gmail.com")){
+    throw new ApiError(400, "Enter a valid E-Mail");
   }
   // Checking Esist Username or email
   const existUser =await User.findOne({
@@ -33,8 +37,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   console.log("request Error", req.files)
   // Checking images
-  // const avatarLocalPath = req.files?.avatar[0]?.path;
-  // const coverImgLocalPath = req.files?.coverImage[0]?.path;
+ 
 
   let avatarLocalPath;
   if (
