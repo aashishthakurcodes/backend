@@ -15,18 +15,3 @@ import mongoose from "mongoose";
  export default connectDB;
 
 
-//  (async () => {
-//     try {
-//       console.log('MongoDB Connection String:', process.env.MONGO_URL);
-//       await mongoose.connect(`${process.env.MONGO_URL}/${DB_Name}`);
-//       console.log(`${process.env.MONGO_URL}`);
-//       app.on("error",(error)=>{
-//           console.log("Error In connection",error)
-//       })
-//       app.listen(process.env.PORT,()=>{
-//           console.log(`App is listening on port ${process.env.PORT}`)
-//       })
-//     } catch (error) {
-//       console.log("Error in Database Connection", error);
-//     }
-//   })();
