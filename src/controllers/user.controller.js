@@ -4,6 +4,10 @@ import { User } from "../models/user.Model.js";
 import { uploadOnCloudnary } from "../utils/cloudnary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
+
+
+
+
 const registerUser = asyncHandler(async (req, res) => {
   // Get user detail from frontend all users model
   // Validation - not empty
@@ -93,4 +97,37 @@ const registerUser = asyncHandler(async (req, res) => {
   return res.status(201).json(new ApiResponse(200, createdUser, "User Registered Successfully"));
 });
 
-export { registerUser };
+
+
+const loginUser=asyncHandler(async(req,res)=>{
+// Data from form
+// Username
+// Find the user
+// Passpord check
+// Acess or refresh token
+// Send Cookies
+// Send Login msg
+
+const  {email,username,password} =req.body;
+if(!username || !email){
+  throw new ApiError(400, "Username or E-mail is required")
+}
+
+const user =await User.findOne({
+  $or:[{username},{email}]
+})
+
+if(!user){
+  throw new ApiError(404,"User does not exist")
+}
+
+// Ckecking password
+const isPasswordValid =await user.isPasswordCorrect(password)
+
+if(!isPasswordValid){
+  throw new ApiError(401,"Invalid User Credentials")
+}
+
+})
+
+export { registerUser,loginUser };
