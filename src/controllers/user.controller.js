@@ -4,7 +4,7 @@ import { User } from "../models/user.Model.js";
 import { uploadOnCloudnary } from "../utils/cloudnary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-const generateacessAndRefreshToken = async () => {
+const generateacessAndRefreshToken = async (userId) => {
   try {
     const user = await User.findById(userId);
     const accessToken = user.generateAccessToken();
@@ -83,10 +83,10 @@ const registerUser = asyncHandler(async (req, res) => {
 
   //Checking Avatar
   if (!avatar) {
-    throw new ApiError(400, "Avatar is required");
+    throw new ApiError(400, "Avatar is required true");
   }
 
-  // Saving on Dtabase
+  // Saving on Database
   const user = await User.create({
     fullname,
     avatar: avatar.url,
@@ -120,13 +120,15 @@ const loginUser = asyncHandler(async (req, res) => {
   // Send Login msg
 
   const { email, username, password } = req.body;
-  if (!username || !email) {
+  if (!(username || email)) {
     throw new ApiError(400, "Username or E-mail is required");
   }
 
   const user = await User.findOne({
     $or: [{ username }, { email }],
   });
+
+
 
   if (!user) {
     throw new ApiError(404, "User does not exist");
