@@ -239,7 +239,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid refresh Token _01");
   }
 });
-
+//Change Current Password
 const changeCurrentPassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const user = await User.findById(req.user?._id);
@@ -255,13 +255,13 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, {}, "Password Changed Successfully"));
 });
-
+//Get Current User info
 const getCurrentUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(200, req.user, "Current User Fetched Successfully");
 });
-
+//Update Account Details
 const updateAccountDetails = asyncHandler(async (req, res) => {
   const { fullname, email } = req.body;
   if (!fullname || !email) {
@@ -283,7 +283,7 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, user, "Account Updated Successfully"));
 });
-
+//Update Avatar Image
 const updateAvatar = asyncHandler(async (req, res) => {
   const avatarLocalPath = req.file?.path;
   if (!avatarLocalPath) {
@@ -302,7 +302,7 @@ const updateAvatar = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, user, "Cover Image is updated"));
 });
-
+//Update Cover Image
 const updateCoverImg = asyncHandler(async (req, res) => {
   const coverImgLocalPath = req.file?.path;
   if (!coverImgLocalPath) {
